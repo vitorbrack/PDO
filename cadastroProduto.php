@@ -4,6 +4,8 @@ include_once './model/Produto.php';
 include_once './model/Mensagem.php';
 $msg = new Mensagem();
 $pr = new Produto();
+$fornecedor = new Fornecedor();
+$pr->setFornecedor($fornecedor);
 $btEnviar = FALSE;
 $btAtualizar = FALSE;
 $btExcluir = FALSE;

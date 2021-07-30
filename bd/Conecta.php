@@ -5,7 +5,7 @@ class Conecta {
     public function conectadb(){
         $pdo = null;
         try{
-            $pdo = new PDO("mysql:host=localhost;dbname=dbphp01", 
+            $pdo = new PDO("mysql:host=localhost;dbname=dbproduto", 
                     "root", "senac");
         } catch (Exception $ex) {
             echo "<script>alert('Erro na conexão com o "

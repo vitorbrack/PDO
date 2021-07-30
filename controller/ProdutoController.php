@@ -51,7 +51,7 @@ class ProdutoController {
     //método para editar produto
     public function editarProduto($id){
         $daoProduto = new DaoProduto();
-        return $daoProduto->editaProdutoDAO($id);
+        return $daoProduto->atualizarProdutoDAO($id);
     }
     
     //método para limpar formulário

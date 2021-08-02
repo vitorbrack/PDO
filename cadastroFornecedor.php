@@ -26,7 +26,8 @@ $btExcluir = FALSE;
             padding-top: 15px;
         }
     </style>
-    function mascara(t, mask){
+  <script>
+  function mascara(t, mask){
     var i = t.value.length;
     var saida = mask.substring(1,0);
     var texto = mask.substring(i)
@@ -34,8 +35,6 @@ $btExcluir = FALSE;
     t.value += texto.substring(0,1);
     }
     }
-
-    <script>
     </script>
 </head>
 
@@ -209,7 +208,7 @@ $btExcluir = FALSE;
                             <label>Fornecedor</label>
                             <input class="form-control" type="text" name="nomeFornecedor" value="<?php echo $fr->getNomeFornecedor(); ?>">
                             <label>CEP</label>
-                            <input class="form-control" type="text" id="cep"  onkeypress="mascara(this, '#####-###')" maxlength="9" value="<?php echo $fr->getCep(); ?>" name="cep">
+                            <input class="form-control" type="text" id="cep" onkeypress="mascara(this, '#####-###')" maxlength="9" value="<?php echo $fr->getCep(); ?>" name="cep">
                             <label>Rua/Logradouro</label>
                             <input class="form-control" type="text" id="rua" value="<?php echo $fr->getLogradoro(); ?>" name="logradouro">
                             <label>Complemento</label>

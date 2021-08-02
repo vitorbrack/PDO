@@ -2,6 +2,9 @@
 include_once 'C:/xampp/htdocs/PHPMatutinoPDO/bd/Conecta.php';
 include_once 'C:/xampp/htdocs/PHPMatutinoPDO/model/Produto.php';
 include_once 'C:/xampp/htdocs/PHPMatutinoPDO/model/Mensagem.php';
+include_once 'C:/xampp/htdocs/PHPMatutinoPDO/model/Fornecedor.php';
+
+
 
 class DaoProduto {
 
@@ -14,13 +17,15 @@ class DaoProduto {
             $vlrCompra = $produto->getVlrCompra();
             $vlrVenda = $produto->getVlrVenda();
             $qtdEstoque = $produto->getQtdEstoque();
+            $fornecedor = $produto->getFornecedor();
             try {
                 $stmt = $conecta->prepare("insert into produto values "
-                        . "(null,?,?,?,?)");
+                        . "(null,?,?,?,?,?)");
                 $stmt->bindParam(1, $nomeProduto);
                 $stmt->bindParam(2, $vlrCompra);
                 $stmt->bindParam(3, $vlrVenda);
                 $stmt->bindParam(4, $qtdEstoque);
+                $stmt->bindParam(5,$fornecedor);
                 $stmt->execute();
                 $msg->setMsg("<p style='color: green;'>"
                         . "Dados Cadastrados com sucesso</p>");
@@ -46,18 +51,21 @@ class DaoProduto {
             $vlrCompra = $produto->getVlrCompra();
             $vlrVenda = $produto->getVlrVenda();
             $qtdEstoque = $produto->getQtdEstoque();
+            $fornecedor = $produto->getFornecedor();
             try{
                 $stmt = $conecta->prepare("update produto set "
-                        . "nome = ?,"
-                        . "vlrCompra = ?,"
-                        . "vlrVenda = ?, "
-                        . "qtdEstoque = ? "
-                        . "where id = ?");
+                        . "nomeProduto = ?,"
+                        . "valorCompra = ?,"
+                        . "valorVenda = ?, "
+                        . "qtdEstoque = ?, "
+                        . "FkFornecedor = ? "
+                        . "where idproduto = ?");
                 $stmt->bindParam(1, $nomeProduto);
                 $stmt->bindParam(2, $vlrCompra);
                 $stmt->bindParam(3, $vlrVenda);
                 $stmt->bindParam(4, $qtdEstoque);
-                $stmt->bindParam(5, $id);
+                $stmt->bindParam(5,$fornecedor);
+                $stmt->bindParam(6, $id);
                 $stmt->execute();
                 $msg->setMsg("<p style='color: blue;'>"
                         . "Dados atualizados com sucesso</p>");
@@ -79,18 +87,35 @@ class DaoProduto {
         $conecta = $conn->conectadb();
         if($conecta){
             try {
-                $rs = $conecta->query("select * from produto");
+                $rs = $conecta->query("SELECT * FROM produto inner join fornecedor "
+                . "on produto.FkFornecedor = fornecedor.idFornecedor order by produto.idproduto asc " );
                 $lista = array();
                 $a = 0;
                 if($rs->execute()){
                     if($rs->rowCount() > 0){
                         while($linha = $rs->fetch(PDO::FETCH_OBJ)){
                             $produto = new Produto();
-                            $produto->setIdProduto($linha->id);
-                            $produto->setNomeProduto($linha->nome);
-                            $produto->setVlrCompra($linha->vlrCompra);
-                            $produto->setVlrVenda($linha->vlrVenda);
+                            $produto->setIdProduto($linha->idproduto);
+                            $produto->setNomeProduto($linha->nomeProduto);
+                            $produto->setVlrCompra($linha->valorCompra);
+                            $produto->setVlrVenda($linha->valorVenda);
                             $produto->setQtdEstoque($linha->qtdEstoque);
+                            
+                            $form = new Fornecedor();
+                            $form->setIdfornecedor($linha->idFornecedor);
+                            $form->setNomeFornecedor($linha->nomeFornecedor);
+                            $form->setLogradoro($linha->logradoro);
+                            $form->setComplemento($linha->complemento);
+                            $form->setBairro($linha->bairro);
+                            $form->setCidade($linha->cidade);
+                            $form->setUf($linha->UF);
+                            $form->setCep($linha->cep);
+                            $form->setRepresentante($linha->representante);
+                            $form->setEmail($linha->email);
+                            $form->setTelFixo($linha->telFixo);
+                            $form->setTelcell($linha->telCell);
+                            $produto->setFornecedor($form);
+
                             $lista[$a] = $produto;
                             $a++;
                         }
@@ -112,7 +137,7 @@ class DaoProduto {
         if($conecta){
              try {
                 $stmt = $conecta->prepare("delete from produto "
-                        . "where id = ?");
+                        . "where idproduto = ?");
                 $stmt->bindParam(1, $id);
                 $stmt->execute();
                 $msg->setMsg("<p style='color: #d6bc71;'>"
@@ -135,17 +160,31 @@ class DaoProduto {
         $produto = new Produto();
         if($conecta){
             try {
-                $rs = $conecta->prepare("select * from produto where "
-                        . "id = ?");
+                $rs = $conecta->prepare("select * from produto inner join fornecedor on produto.FkFornecedor = fornecedor.idFornecedor where produto.idproduto = ?");
                 $rs->bindParam(1, $id);
                 if($rs->execute()){
                     if($rs->rowCount() > 0){
                         while($linha = $rs->fetch(PDO::FETCH_OBJ)){
-                            $produto->setIdProduto($linha->id);
-                            $produto->setNomeProduto($linha->nome);
-                            $produto->setVlrCompra($linha->vlrCompra);
-                            $produto->setVlrVenda($linha->vlrVenda);
+                            $produto->setIdProduto($linha->idproduto);
+                            $produto->setNomeProduto($linha->nomeProduto);
+                            $produto->setVlrCompra($linha->valorCompra);
+                            $produto->setVlrVenda($linha->valorVenda);
                             $produto->setQtdEstoque($linha->qtdEstoque);
+                            
+                            $form = new Fornecedor();
+                            $form->setIdfornecedor($linha->idFornecedor);
+                            $form->setNomeFornecedor($linha->nomeFornecedor);
+                            $form->setLogradoro($linha->logradoro);
+                            $form->setComplemento($linha->complemento);
+                            $form->setBairro($linha->bairro);
+                            $form->setCidade($linha->cidade);
+                            $form->setUf($linha->UF);
+                            $form->setCep($linha->cep);
+                            $form->setRepresentante($linha->representante);
+                            $form->setEmail($linha->email);
+                            $form->setTelFixo($linha->telFixo);
+                            $form->setTelcell($linha->telCell);
+                            $produto->setFornecedor($form);
                         }
                     }
                 }

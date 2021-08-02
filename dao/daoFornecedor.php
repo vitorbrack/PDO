@@ -12,7 +12,6 @@ class DaoFornecedor {
         if($conecta){
             $nomeFornecedor = $fornecedor->getNomeFornecedor();
             $logradoro = $fornecedor->getLogradoro();
-          
             $complemento = $fornecedor->getComplemento();
             $bairro = $fornecedor->getBairro();
             $cidade = $fornecedor->getCidade();

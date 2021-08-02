@@ -1,9 +1,13 @@
 <?php
+
+include_once './model/Fornecedor.php';
 include_once 'controller/ProdutoController.php';
 include_once './model/Produto.php';
 include_once './model/Mensagem.php';
+include_once 'controller/FornecedorController.php';
 $msg = new Mensagem();
 $pr = new Produto();
+$fcc = new FornecedorController();
 $fornecedor = new Fornecedor();
 $pr->setFornecedor($fornecedor);
 $btEnviar = FALSE;
@@ -71,14 +75,15 @@ $btExcluir = FALSE;
                         if (isset($_POST['cadastrarProduto'])) {
                             $nomeProduto = trim($_POST['nomeProduto']);
                             if ($nomeProduto != "") {
-                                $vlrCompra = $_POST['vlrCompra'];
-                                $vlrVenda = $_POST['vlrVenda'];
+                                $vlrCompra = $_POST['valorCompra'];
+                                $vlrVenda = $_POST['valorVenda'];
                                 $qtdEstoque = $_POST['qtdEstoque'];
+                                $fornecedor = $_POST['idFornecedor'];
 
                                 $pc = new ProdutoController();
                                 unset($_POST['cadastrarProduto']);
                                 $msg = $pc->inserirProduto($nomeProduto, $vlrCompra,
-                                        $vlrVenda, $qtdEstoque);
+                                        $vlrVenda, $qtdEstoque,$fornecedor);
                                 echo $msg->getMsg();
                                 echo "<META HTTP-EQUIV='REFRESH' CONTENT=\"2;
                                     URL='cadastroProduto.php'\">";
@@ -90,14 +95,15 @@ $btExcluir = FALSE;
                             $nomeProduto = trim($_POST['nomeProduto']);
                             if ($nomeProduto != "") {
                                 $id = $_POST['idproduto'];
-                                $vlrCompra = $_POST['vlrCompra'];
-                                $vlrVenda = $_POST['vlrVenda'];
+                                $vlrCompra = $_POST['valorCompra'];
+                                $vlrVenda = $_POST['valorVenda'];
                                 $qtdEstoque = $_POST['qtdEstoque'];
+                                $fornecedor = $_POST['idFornecedor'];
 
                                 $pc = new ProdutoController();
                                 unset($_POST['atualizarProduto']);
                                 $msg = $pc->atualizarProduto($id, $nomeProduto, 
-                                        $vlrCompra, $vlrVenda, $qtdEstoque);
+                                        $vlrCompra, $vlrVenda, $qtdEstoque,$fornecedor);
                                 echo $msg->getMsg();
                                 echo "<META HTTP-EQUIV='REFRESH' CONTENT=\"2;
                                     URL='cadastroProduto.php'\">";
@@ -170,6 +176,37 @@ $btExcluir = FALSE;
                                     <label>Qtde em Estoque</label>  
                                     <input class="form-control" type="number" 
                                            value="<?php echo $pr->getQtdEstoque(); ?>" name="qtdEstoque">
+
+                                           <select name="idFornecedor" class="form-select">
+                                        <option hidden>Selecione</option>
+
+                                        <?php
+                                          $listaFornecedores = $fcc->listarFornecedores();
+                                          if($listaFornecedores != null){
+                                              foreach ($listaFornecedores as $lf){
+                                                  ?>
+                                            <option value="<?php echo $lf->getidFornecedor(); ?>"
+                                                    
+                                        <?php
+                                        $fk = $pr->getFornecedor()->getidFornecedor();
+                                        if($pr->getFornecedor()->getidFornecedor() != ""){
+                                            if($lf->getidFornecedor() ==
+                                            $pr->getFornecedor()->getIdfornecedor()){
+                                                echo "selected = 'selected'";
+                                            }
+                                        }
+                                        ?>
+                                        >
+                                            <?php echo $lf->getNomeFornecedor(); ?></option>
+                                            <?php
+                                              }
+                                          }
+                                        ?>
+
+
+                                       
+                                    
+                                   </select>
                                     <input type="submit" name="cadastrarProduto"
                                            class="btn btn-success btInput" value="Enviar"
                                            <?php if($btEnviar == TRUE) echo "disabled"; ?>>

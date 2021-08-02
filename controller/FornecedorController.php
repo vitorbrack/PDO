@@ -10,7 +10,6 @@ class FornecedorController {
         $fornecedor = new Fornecedor();
         $fornecedor->setNomeFornecedor($nomeFornecedor);
         $fornecedor->setLogradoro($logradouro);
-      
         $fornecedor->setComplemento($complemento);
         $fornecedor->setBairro($bairro);
         $fornecedor->setCidade($cidade);

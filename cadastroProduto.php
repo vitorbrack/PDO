@@ -75,8 +75,8 @@ $btExcluir = FALSE;
                         if (isset($_POST['cadastrarProduto'])) {
                             $nomeProduto = trim($_POST['nomeProduto']);
                             if ($nomeProduto != "") {
-                                $vlrCompra = $_POST['valorCompra'];
-                                $vlrVenda = $_POST['valorVenda'];
+                                $vlrCompra = $_POST['vlrCompra'];
+                                $vlrVenda = $_POST['vlrVenda'];
                                 $qtdEstoque = $_POST['qtdEstoque'];
                                 $fornecedor = $_POST['idFornecedor'];
 
@@ -95,8 +95,8 @@ $btExcluir = FALSE;
                             $nomeProduto = trim($_POST['nomeProduto']);
                             if ($nomeProduto != "") {
                                 $id = $_POST['idproduto'];
-                                $vlrCompra = $_POST['valorCompra'];
-                                $vlrVenda = $_POST['valorVenda'];
+                                $vlrCompra = $_POST['vlrCompra'];
+                                $vlrVenda = $_POST['vlrVenda'];
                                 $qtdEstoque = $_POST['qtdEstoque'];
                                 $fornecedor = $_POST['idFornecedor'];
 

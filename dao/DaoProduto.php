@@ -112,8 +112,8 @@ class DaoProduto {
                             $form->setCep($linha->cep);
                             $form->setRepresentante($linha->representante);
                             $form->setEmail($linha->email);
-                            $form->setTelFixo($linha->telFixo);
-                            $form->setTelcell($linha->telCell);
+                            $form->setTelFixo($linha->telfixo);
+                            $form->setTelcell($linha->telcell);
                             $produto->setFornecedor($form);
 
                             $lista[$a] = $produto;
@@ -182,8 +182,8 @@ class DaoProduto {
                             $form->setCep($linha->cep);
                             $form->setRepresentante($linha->representante);
                             $form->setEmail($linha->email);
-                            $form->setTelFixo($linha->telFixo);
-                            $form->setTelcell($linha->telCell);
+                            $form->setTelFixo($linha->telfixo);
+                            $form->setTelcell($linha->telcell);
                             $produto->setFornecedor($form);
                         }
                     }

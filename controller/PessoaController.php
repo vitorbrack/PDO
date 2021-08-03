@@ -4,7 +4,7 @@ require_once 'C:/xampp/htdocs/PHPMatutinoPDO/model/Pessoa.php';
 class PessoController {
 
     public function inserirPessoa($nome, $dtNasc, $login, $senha, 
-            $perfil, $email, $cpf){
+            $perfil, $email, $cpf,$fkenredeco){
         $pessoa = new Pessoa();
         $pessoa->setNome($nome);
         $pessoa->setDtNasc($dtNasc);
@@ -13,6 +13,7 @@ class PessoController {
         $pessoa->setPerfil($perfil);
         $pessoa->setEmail($email);
         $pessoa->setCpf($cpf);
+        $pessoa->setFkEndereco($fkenredeco);
                 
         $daoPessoa = new daoPessoa();
         return $daoPessoa->inserir($pessoa);

@@ -1,10 +1,16 @@
 <?php
 require_once "C:/xampp/htdocs/PHPMatutinoPDO/dao/daoPessoa.php";
 require_once 'C:/xampp/htdocs/PHPMatutinoPDO/model/Pessoa.php';
-class PessoController {
+require_once 'c:/xampp/htdocs/PHPMatutinoPDO/model/Endereco.php';
+
+class PessoaController {
 
     public function inserirPessoa($nome, $dtNasc, $login, $senha, 
-            $perfil, $email, $cpf,$fkenredeco){
+            $perfil, $email, $cpf,$cep){
+
+                $endereco = new Endereco();
+                $endereco->setCep($cep);
+                
         $pessoa = new Pessoa();
         $pessoa->setNome($nome);
         $pessoa->setDtNasc($dtNasc);
@@ -13,7 +19,7 @@ class PessoController {
         $pessoa->setPerfil($perfil);
         $pessoa->setEmail($email);
         $pessoa->setCpf($cpf);
-        $pessoa->setFkEndereco($fkenredeco);
+        $pessoa->setFkEndereco($endereco);
                 
         $daoPessoa = new daoPessoa();
         return $daoPessoa->inserir($pessoa);

@@ -66,9 +66,9 @@
                         $cpf = $_POST['cpf'];
                         $email = $_POST['email'];
 
-                        $pc = new PessoController();
+                        $pc = new PessoaController();
                         echo "<p>".$pc->inserirPessoa($nome, $dtNasc, 
-                            $login, $senha, $perfil, $email, $cpf)."</p>";
+                            $login, $senha, $perfil, $email, $cpf,)."</p>";
                     }
                     ?>
                     <div class="card-body border">
@@ -85,9 +85,12 @@
                                     <label>E-Mail</label>  
                                     <input class="form-control" type="email" 
                                            name="email"> 
-                                    <label>CPF</label>  
-                                    <input class="form-control" type="text" 
-                                           name="cpf">
+                                    <label>CPF</label> 
+                                    <label id="valCpf" style="color: red; font-size: 11px;"></label>
+                                    <input class="form-control" type="text" id="cpf" 
+                                           onkeypress="mascara(this, '###.###.###-##')" maxlength="14"
+                                           onblur="return validaCpfCnpj();" name="cpf"
+                                           required="required">
                                 </div>
                                 <div class="col-md-6">
                                     <br>
@@ -122,6 +125,159 @@
         </div>
         <script src="js/bootstrap.js"></script>
         <script src="js/bootstrap.min.js"></script>
+        <script>
+            function apenasNumeros(string) 
+            {
+                var numsStr = string.replace(/[^0-9]/g,'');
+                return parseInt(numsStr);
+            }
+            function mascara(t, mask){
+                var i = t.value.length;
+                var saida = mask.substring(1,0);
+                var texto = mask.substring(i);
+                var n = texto.substring(0,1);
+                var n = n.replace(/[a-zA-z]/,'');
+                n = parseInt(n);
+                if(isNaN(n)){
+                    if (texto.substring(0,1) !== saida){
+                        t.value += texto.substring(0,1);
+                    }
+                }else{
+                    t.value = "";
+                    document.getElementById("cpf").value = "";
+                }
+            }
+        </script>        
+<script>
+ function validaCpfCnpj() {
+    var val = document.getElementById("cpf").value;
+    if (val.length == 14) {
+        var cpf = val.trim();
+     
+        cpf = cpf.replace(/\./g, '');
+        cpf = cpf.replace('-', '');
+        cpf = cpf.split('');
+        
+        var v1 = 0;
+        var v2 = 0;
+        var aux = false;
+        
+        for (var i = 1; cpf.length > i; i++) {
+            if (cpf[i - 1] != cpf[i]) {
+                aux = true;   
+            }
+        } 
+        
+        if (aux == false) {
+            document.getElementById("valCpf").innerHTML = "* CPF inválido";
+            return false; 
+        } 
+        
+        for (var i = 0, p = 10; (cpf.length - 2) > i; i++, p--) {
+            v1 += cpf[i] * p; 
+        } 
+        
+        v1 = ((v1 * 10) % 11);
+        
+        if (v1 == 10) {
+            v1 = 0; 
+        }
+        
+        if (v1 != cpf[9]) {
+            document.getElementById("valCpf").innerHTML = "* CPF inválido";
+            return false; 
+        } 
+        
+        for (var i = 0, p = 11; (cpf.length - 1) > i; i++, p--) {
+            v2 += cpf[i] * p; 
+        } 
+        
+        v2 = ((v2 * 10) % 11);
+        
+        if (v2 == 10) {
+            v2 = 0; 
+        }
+        
+        if (v2 != cpf[10]) {
+            document.getElementById("valCpf").innerHTML = "* CPF inválido";
+            return false; 
+        } else {  
+            document.getElementById("valCpf").innerHTML = "";
+            return true; 
+        }
+    } else if (val.length == 18) {
+        var cnpj = val.trim();
+        
+        cnpj = cnpj.replace(/\./g, '');
+        cnpj = cnpj.replace('-', '');
+        cnpj = cnpj.replace('/', ''); 
+        cnpj = cnpj.split(''); 
+        
+        var v1 = 0;
+        var v2 = 0;
+        var aux = false;
+        
+        for (var i = 1; cnpj.length > i; i++) { 
+            if (cnpj[i - 1] != cnpj[i]) {  
+                aux = true;   
+            } 
+        } 
+        
+        if (aux == false) {  
+            document.getElementById("valCpf").innerHTML = "* CPF inválido";
+            return false; 
+        }
+        
+        for (var i = 0, p1 = 5, p2 = 13; (cnpj.length - 2) > i; i++, p1--, p2--) {
+            if (p1 >= 2) {  
+                v1 += cnpj[i] * p1;  
+            } else {  
+                v1 += cnpj[i] * p2;  
+            } 
+        } 
+        
+        v1 = (v1 % 11);
+        
+        if (v1 < 2) { 
+            v1 = 0; 
+        } else { 
+            v1 = (11 - v1); 
+        } 
+        
+        if (v1 != cnpj[12]) {  
+            document.getElementById("valCpf").innerHTML = "* CPF inválido";
+            return false; 
+        } 
+        
+        for (var i = 0, p1 = 6, p2 = 14; (cnpj.length - 1) > i; i++, p1--, p2--) { 
+            if (p1 >= 2) {  
+                v2 += cnpj[i] * p1;  
+            } else {   
+                v2 += cnpj[i] * p2; 
+            } 
+        }
+        
+        v2 = (v2 % 11); 
+        
+        if (v2 < 2) {  
+            v2 = 0;
+        } else { 
+            v2 = (11 - v2); 
+        } 
+        
+        if (v2 != cnpj[13]) {
+            document.getElementById("valCpf").innerHTML = "* CPF inválido";
+            return false; 
+        } else {  
+            document.getElementById("valCpf").innerHTML = "";
+            return true; 
+        }
+    } else {
+        document.getElementById("valCpf").innerHTML = "* CPF inválido";
+        return false;
+    }
+ }
+</script>
     </body>
 </html>
 

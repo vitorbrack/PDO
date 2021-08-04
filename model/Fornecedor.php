@@ -13,7 +13,7 @@ class Fornecedor{
     private $representante;
     private $email;
     private $telfixo;
-    private $telcell;
+    private $telcell; 
 
     /**
      * Get the value of idFornecedor

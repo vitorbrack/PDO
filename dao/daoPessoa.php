@@ -3,7 +3,7 @@
 require_once 'C:/xampp/htdocs/PHPMatutinoPDO/bd/Conecta.php';
 require_once 'C:/xampp/htdocs/PHPMatutinoPDO/model/Pessoa.php';
 require_once  'C:/xampp/htdocs/PHPMatutinoPDO/model/Endereco.php';
-include_once 'C:/xampp/htdocs/PHPMatutinoPDO/model/Mensagem.php.php';
+include_once 'C:/xampp/htdocs/PHPMatutinoPDO/model/Mensagem.php';
 
 class daoPessoa {
 
@@ -20,15 +20,13 @@ class daoPessoa {
             $perfil = $pessoa->getPerfil();
             $email = $pessoa->getEmail();
             $cpf = $pessoa->getCpf();
-            $fkendereco = $pessoa->getFkEndereco();
-            
-            $logradouro = $pessoa->getEndereco()->getLogradouro();
-            $complemento = $pessoa->getEndereco()->getComplemento();
-            $bairro = $pessoa->getEndereco()->getBairro();
-            $cidade = $pessoa->getEndereco()->getCidade();
-            $uf = $pessoa->getEndereco()->getUf();
-            $cep = $pessoa->getEndereco()->getCep();
 
+            $cep = $pessoa->getFkEndereco()->getCep();
+            $logradouro = $pessoa->getFkEndereco()->getLogradouro();
+            $complemento = $pessoa->getFkEndereco()->getComplemento();
+            $bairro = $pessoa->getFkEndereco()->getBairro();
+            $cidade = $pessoa->getFkEndereco()->getCidade();
+            $uf = $pessoa->getFkEndereco()->getUf();
            
             //$msg->setMsg("$logradouro, $complemento, $cep");
             try {
@@ -75,15 +73,17 @@ class daoPessoa {
                         }
                     }
                     
-                    //processo para inserir dados de fornecedor
-                    $stmt = $conecta->prepare("insert into fornecedor values "
-                            . "(null,?,?,?,?,?,?)");
-                    $stmt->bindParam(1, $nomeFornecedor);
-                    $stmt->bindParam(2, $representante);
-                    $stmt->bindParam(3, $email);
-                    $stmt->bindParam(4, $telFixo);
-                    $stmt->bindParam(5, $telCel);
-                    $stmt->bindParam(6, $fkEnd);
+                    //processo para inserir dados de pessoa
+                    $stmt = $conecta->prepare("insert into pessoa values "
+                            . "(null,?,?,?,?,?,?,?,?)");
+                    $stmt->bindParam(1, $nome);
+                    $stmt->bindParam(2, $dtNasc);
+                    $stmt->bindParam(3, $login);
+                    $stmt->bindParam(4, $senha);
+                    $stmt->bindParam(5, $perfil);
+                    $stmt->bindParam(6,$email);
+                    $stmt->bindParam(7, $cpf);
+                    $stmt->bindParam(8,$fkEnd);
                     $stmt->execute();
                 }
                 

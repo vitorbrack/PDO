@@ -78,50 +78,39 @@ $btEnviar = FALSE;
                 <div class="card-header bg-dark text-center text-white border" style="padding-bottom: 15px; padding-top: 15px;">
                     Cadastro de Cliente
                 </div>
+                <div class="card-body border">
                 <?php
                 //envio dos dados para o BD
                 if (isset($_POST['cadastrar'])) {
                     $nome = trim($_POST['nome']);
                     if ($nome != ""){
-                    $idpessoa = $_POST['idPessoa'];
-                    $nome = $_POST['nome'];
+                    
+                  
                     $dtNasc = $_POST['dtNasc'];
                     $login = $_POST['login'];
                     $senha = $_POST['senha'];
                     $perfil = $_POST['perfil'];
-                    $cpf = $_POST['cpf'];
                     $email = $_POST['email'];
+                    $cpf = $_POST['cpf'];
                     $cep = $_POST['cep'];
                     $logradouro = $_POST['logradouro'];
                     $complemento = $_POST['complemento'];
                     $bairro = $_POST['bairro'];
                     $cidade = $_POST['cidade'];
                     $uf = $_POST['uf'];
-
+                    
                     $pc = new PessoaController();
                     unset($_POST['cadastrar']);
                     $msg = $pc->inserirPessoa(
-                        $nome,
-                        $dtNasc,
-                        $login,
-                        $senha,
-                        $perfil,
-                        $email,
-                        $cpf, 
-                        $cep, 
-                        $logradouro , 
-                        $complemento , 
-                        $bairro, 
-                        $cidade, 
-                        $uf
+                        $nome, $dtNasc, $login, $senha, 
+                        $perfil, $email, $cpf, $cep, $logradouro , $uf , $bairro, $cidade, $complemento
                     );
                     echo $msg->getMsg();
-                            echo "<META HTTP-EQUIV='REFRESH' CONTENT=\"2;
-                                URL='cadastro.php'\">";
-                }
-            }
+                    echo "<META HTTP-EQUIV='REFRESH' CONTENT=\"2;
+                         URL='cadastro.php'\">";
+                  }
+               }
                 ?>
-                <div class="card-body border">
                     <form method="post" action="">
                         <div class="row">
                             <div class="col-md-6">
@@ -156,8 +145,20 @@ $btEnviar = FALSE;
                                 <label>Perfil</label>
                                 <select name="perfil" class="form-select">
                                     <option>[--Selecione--]</option>
-                                    <option value="<?php echo $pe->getPerfil();?>">Cliente</option>
-                                    <option value="<?php echo $pe->getPerfil();?>">Funcionário</option>
+                                    <option 
+                                    <?php
+                                         if($pe->getPerfil() == "Cliente") {
+                                            echo "selected ='selected'";
+                                         }
+                                         
+                                    ?>>Cliente</option>
+                                    <option 
+                                    <?php
+                                         if($pe->getPerfil() == "Funcionário") {
+                                            echo "selected ='selected'";
+                                         }
+                                         
+                                    ?>>Funcionário</option>
                                 </select>
                             </div>
                         </div>

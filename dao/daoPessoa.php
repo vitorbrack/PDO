@@ -28,8 +28,8 @@ class daoPessoa {
             $cidade = $pessoa->getFkEndereco()->getCidade();
             $uf = $pessoa->getFkEndereco()->getUf();
            
-            //$msg->setMsg("$logradouro, $complemento, $cep");
-            try {
+            $msg->setMsg("$logradouro, $complemento, $cep,$bairro,$cidade,$uf,$nome,$dtNasc,$login,$senha,$perfil,$email,$cpf");
+          /*  try {
                 //processo para pegar o idendereco da tabela endereco, conforme 
                 //o cep, o logradouro e o complemento informado.
                 $st = $conecta->prepare("select idendereco "
@@ -43,8 +43,12 @@ class daoPessoa {
                         $msg->setMsg("".$st->rowCount());
                         while($linha = $st->fetch(PDO::FETCH_OBJ)){
                             $fkEnd = $linha->idendereco;
+                            $msg->setMsg ($fkEnd);
                         }
+                        
                         //$msg->setMsg("$fkEnd");
+                       
+
                     }else{
                         $st2 = $conecta->prepare("insert into "
                                 . "endereco values (null,?,?,?,?,?,?)");
@@ -67,8 +71,9 @@ class daoPessoa {
                                 $msg->setMsg("".$st3->rowCount());
                                 while($linha = $st3->fetch(PDO::FETCH_OBJ)){
                                     $fkEnd = $linha->idendereco;
+                                    echo $fkEnd;
+                                    
                                 }
-                                //$msg->setMsg("$fkEnd");
                             }
                         }
                     }
@@ -81,20 +86,21 @@ class daoPessoa {
                     $stmt->bindParam(3, $login);
                     $stmt->bindParam(4, $senha);
                     $stmt->bindParam(5, $perfil);
-                    $stmt->bindParam(6,$email);
+                    $stmt->bindParam(6, $email);
                     $stmt->bindParam(7, $cpf);
-                    $stmt->bindParam(8,$fkEnd);
+                    $stmt->bindParam(8, $fkEnd);
                     $stmt->execute();
+                    $msg->setMsg ($fkEnd);
                 }
                 
                 //$msg->setMsg("<p style='color: green;'>"
                         //. "Dados Cadastrados com sucesso</p>");
             } catch (Exception $ex) {
                 $msg->setMsg($ex);
-            }
+            }*/
         }else{
-            $msg->setMsg("<p style='color: red;'>"
-                        . "Erro na conexão com o banco de dados.</p>");
+           // $msg->setMsg("<p style='color: red;'>"
+                      //  . "Erro na conexão com o banco de dados.</p>");
         }
         $conn = null;
            

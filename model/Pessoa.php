@@ -75,25 +75,17 @@ class Pessoa {
     function setCpf($cpf) {
         $this->cpf = $cpf;
     }
-
-
-    /**
-     * Get the value of fkEndereco
-     */ 
+    
     public function getFkEndereco()
     {
         return $this->fkEndereco;
     }
 
-    /**
-     * Set the value of fkEndereco
-     *
-     * @return  self
-     */ 
+    
     public function setFkEndereco($fkEndereco)
     {
         $this->fkEndereco = $fkEndereco;
 
-        return $this;
+     
     }
 }

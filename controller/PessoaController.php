@@ -2,11 +2,12 @@
 require_once "C:/xampp/htdocs/PHPMatutinoPDO/dao/daoPessoa.php";
 require_once 'C:/xampp/htdocs/PHPMatutinoPDO/model/Pessoa.php';
 require_once 'c:/xampp/htdocs/PHPMatutinoPDO/model/Endereco.php';
+require_once 'c:/xampp/htdocs/PHPMatutinoPDO/model/Mensagem.php';
 
 class PessoaController {
 
     public function inserirPessoa($nome, $dtNasc, $login, $senha, 
-            $perfil, $email, $cpf,$cep, $logradouro , $uf , $bairro, $cidade, $complemento){
+            $perfil, $email, $cpf, $cep, $logradouro , $uf , $bairro, $cidade, $complemento){
 
         $endereco = new Endereco();
         $endereco->setCep($cep);
@@ -26,9 +27,11 @@ class PessoaController {
         $pessoa->setCpf($cpf);
         $pessoa->setFkEndereco($endereco);
 
-        $pessoa->setFkEndereco($endereco);
-                
+     
         $daoPessoa = new daoPessoa();
-        return $daoPessoa->inserir($pessoa);
+        $msg = new Mensagem();
+        $msg->setMsg($perfil);
+        return $msg;
+        //return $daoPessoa->inserir($pessoa);
     }
 }

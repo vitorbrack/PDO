@@ -45,6 +45,19 @@ class daoPessoa {
                             $fkEnd = $linha->idendereco;
                         }
                         //$msg->setMsg("$fkEnd");
+                        $st1 = $conecta->prepare("INSERT INTO pessoa values(null,?,?,?,?,?,?,?,?)");
+                    $st1->bindParam(1, $nome);
+                    $st1->bindParam(2, $dtNasc);
+                    $st1->bindParam(3, $login);
+                    $st1->bindParam(4, $senha);
+                    $st1->bindParam(5, $perfil);
+                    $st1->bindParam(6, $email);
+                    $st1->bindParam(7, $cpf);
+                    $st1->bindParam(8, $fkEnd);
+
+                    $st1->execute();
+                    $msg->setMsg("<p style='color: green;'>"
+                            . "Dados Cadastrados com sucesso</p>");
                     }else{
                         $st2 = $conecta->prepare("insert into "
                                 . "endereco values (null,?,?,?,?,?,?)");

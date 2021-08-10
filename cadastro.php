@@ -8,6 +8,8 @@ $en = new Endereco();
 $msg = new Mensagem();
 $pe->setFkEndereco($en);
 $btEnviar = FALSE;
+$btAtualizar = FALSE;
+$btExcluir = FALSE;
 ?>
 
 <!DOCTYPE html>
@@ -85,32 +87,122 @@ $btEnviar = FALSE;
                     $nome = trim($_POST['nome']);
                     if ($nome != ""){
                     
-                  
+                    
                     $dtNasc = $_POST['dtNasc'];
                     $login = $_POST['login'];
                     $senha = $_POST['senha'];
                     $perfil = $_POST['perfil'];
-                    $email = $_POST['email'];
                     $cpf = $_POST['cpf'];
+                    $email = $_POST['email'];
                     $cep = $_POST['cep'];
                     $logradouro = $_POST['logradouro'];
                     $complemento = $_POST['complemento'];
                     $bairro = $_POST['bairro'];
                     $cidade = $_POST['cidade'];
                     $uf = $_POST['uf'];
-                    
+
                     $pc = new PessoaController();
                     unset($_POST['cadastrar']);
                     $msg = $pc->inserirPessoa(
-                        $nome, $dtNasc, $login, $senha, 
-                        $perfil, $email, $cpf, $cep, $logradouro , $uf , $bairro, $cidade, $complemento
+                        $nome,
+                        $dtNasc,
+                        $login,
+                        $senha,
+                        $perfil,
+                        $email,
+                        $cpf, 
+                        $cep, 
+                        $logradouro , 
+                        $complemento , 
+                        $bairro, 
+                        $cidade, 
+                        $uf
                     );
                     echo $msg->getMsg();
+                            echo "<META HTTP-EQUIV='REFRESH' CONTENT=\"2;
+                                URL='cadastro.php'\">";
+                }
+            }
+
+            if (isset($_POST['atualizar'])) {
+                $nome = trim($_POST['nome']);
+                if ($nome != "") {
+                    $id = $_POST['idpessoa'];
+                    $dtNasc = $_POST['dtNasc'];
+                    $login = $_POST['login'];
+                    $senha = $_POST['senha'];
+                    $perfil = $_POST['perfil'];
+                    $cpf = $_POST['cpf'];
+                    $email = $_POST['email'];
+                    $cep = $_POST['cep'];
+                    $logradouro = $_POST['logradouro'];
+                    $complemento = $_POST['complemento'];
+                    $bairro = $_POST['bairro'];
+                    $cidade = $_POST['cidade'];
+                    $uf = $_POST['uf'];
+
+                    $pc = new PessoaController();
+                    unset($_POST['atualizar']);
+                    $msg = $pc->atualizarPessoa($id, $nome,
+                    $dtNasc,
+                    $login,
+                    $senha,
+                    $perfil,
+                    $email,
+                    $cpf, 
+                    $cep, 
+                    $logradouro , 
+                    $complemento , 
+                    $bairro, 
+                    $cidade, 
+                    $uf);
+                    echo $msg->getMsg();
                     echo "<META HTTP-EQUIV='REFRESH' CONTENT=\"2;
-                         URL='cadastro.php'\">";
-                  }
-               }
+                        URL='cadastro.php'\">";
+                        
+                }
+            }
+
+            if (isset($_POST['excluir'])) {
+                if ($pe != null) {
+                    $id = $_POST['ide'];
+
+                    $ps = new PessoaController();
+                    unset($_POST['excluir']);
+                    $msg = $ps->excluirPessoaDAO($id);
+                    echo $msg->getMsg();
+                    echo "<META HTTP-EQUIV='REFRESH' CONTENT=\"0;
+                            URL='cadastro.php'\">";
+
+                    
+                }
+            }
+
+            if (isset($_POST['excluirPessoa'])) {
+                if ($pess != null) {
+                    $id = $_POST['idPessoa'];
+
+                    unset($_POST['excluirPessoa']);
+                    $ps = new PessoaController();
+                    $msg = $ps->excluirPessoaDAO($id);
+
+                    echo $msg->getMsg();
+                    echo "<META HTTP-EQUIV='REFRESH' CONTENT=\"0;
+                            URL='cadastro.php'\">";
+
+                    
+                }
+            }
+            if (isset($_GET['id'])) { //é isso que faz preencher no formulário
+                $btEnviar = TRUE;
+                $btAtualizar = TRUE;
+                $btExcluir = TRUE;
+                $id = $_GET['id'];
+                $pc = new PessoaController();
+                $pe = $pc->pesquisarPessoaIdDAO($id);
+            }
                 ?>
+                      <div class="card-body border">
                     <form method="post" action="">
                         <div class="row">
                             <div class="col-md-6">
@@ -132,7 +224,7 @@ $btEnviar = FALSE;
                                 <label>E-Mail</label>
                                 <input class="form-control" type="email" name="email" value="<?php echo $pe->getEmail(); ?>">
                                 <label>CPF</label>
-                                <input class="form-control" type="text" name="cpf" value="<?php echo $pe->getCpf(); ?>">
+                                <input class="form-control" type="text" name="cpf" value="<?php echo $pe->getCpf(); ?>" maxlength="14">
                             </div>
                             <div class="col-md-6">
                                 <br>
@@ -141,25 +233,25 @@ $btEnviar = FALSE;
                                 <label>Senha</label>
                                 <input class="form-control" type="password" name="senha" value="<?php echo $pe->getSenha(); ?>">
                                 <label>Conf. Senha</label>
-                                <input class="form-control" type="password" name="senha2">
+                                <input class="form-control" type="password" name="senha2" >
                                 <label>Perfil</label>
-                                <select name="perfil" class="form-select">
+                                <select name="perfil" type="text" class="form-select">
                                     <option>[--Selecione--]</option>
                                     <option 
                                     <?php
-                                         if($pe->getPerfil() == "Cliente") {
-                                            echo "selected ='selected'";
-                                         }
-                                         
-                                    ?>>Cliente</option>
-                                    <option 
-                                    <?php
-                                         if($pe->getPerfil() == "Funcionário") {
-                                            echo "selected ='selected'";
-                                         }
-                                         
-                                    ?>>Funcionário</option>
+                                    if($pe->getPerfil() == "Cliente"){
+                                        //posso colocar null aonde está escrito Cliente
+                                        echo "selected = 'selected'";
+                                    }?>>Cliente</option>
+                                    <option <?php
+                                    if($pe->getPerfil() == "Funcionário"){
+                                        //posso colocar null aonde está escrito Funcionário
+                                        echo "selected = 'selected'";
+                                    }?>>Funcionário</option>
+                                    
                                 </select>
+                                
+                                
                             </div>
                         </div>
                         <div class="card-header bg-dark text-center text-white border" style="padding-bottom: 15px; padding-top: 15px;">
@@ -196,10 +288,87 @@ $btEnviar = FALSE;
                             <input type="submit" name="cadastrar" class="btn btn-success btInput" value="Enviar">
                             &nbsp;&nbsp;
                             <input type="reset" class="btn btn-light btInput" value="Limpar">
+                            &nbsp;&nbsp;
+                            <input type="submit" name="atualizar"
+                                           class="btn btn-secondary btInput" value="Atualizar"
+                                           <?php if($btAtualizar == FALSE) echo "disabled"; ?>>
                         </div>
                     </form>
                 </div>
             </div>
+            <table class="table table-striped table-responsive"
+                               style="border-radius: 3px; overflow:hidden;">
+                            <thead class="table-dark">
+                                <tr><th>Código</th>
+                                    <th>Nome</th>
+                                    <th>Data de Nascimento</th>
+                                    <th>Email</th>
+                                    <th>CPF</th>
+                                    <th>Perfil</th>
+                                    <th>CEP</th>
+                                    <th>Complemento</th>
+                                    
+                                    <th>Ações</th></tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $pcTable = new PessoaController();
+                                $listaPessoas = $pcTable->listarPessoas();
+                                $a = 0;
+                                if ($listaPessoas != null) {
+                                    foreach ($listaPessoas as $lp) {
+                                        $a++;
+                                        ?>
+                                        <tr>
+                                            <td><?php print_r($lp->getIdPessoa()); ?></td>
+                                            <td><?php print_r($lp->getNome()); ?></td>
+                                            <td><?php print_r($lp->getDtNasc()); ?></td>
+                                            <td><?php print_r($lp->getEmail()); ?></td>
+                                            <td><?php print_r($lp->getCpf()); ?></td>
+                                            <td><?php print_r($lp->getPerfil()); ?></td>
+                                            <td><?php print_r($lp->getFkEndereco()->getCep()); ?></td>
+                                            <td><?php print_r($lp->getFkEndereco()->getComplemento()); ?></td>
+                                            <td><a href="cadastro.php?id=<?php echo $lp->getIdPessoa(); ?>"
+                                                   class="btn btn-light">
+                                                    <img src="img/edita.png" width="32"></a>
+                                                </form>
+                                                <button type="button" 
+                                                        class="btn btn-light" data-bs-toggle="modal" 
+                                                        data-bs-target="#exampleModal<?php echo $a; ?>">
+                                                    <img src="img/delete.png" width="32"></button></td>
+                                            
+                                        </tr>
+                                        <!-- Modal -->
+                                    <div class="modal fade" id="exampleModal<?php echo $a; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                                    <button type="button" class="btn-close" 
+                                                            data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form method="post" action="">
+                                                        <label><strong>Deseja excluir essa Pessoa? 
+                                                                <?php echo $lp->getNome(); ?>?</strong></label>
+                                                        <input type="hidden" name="ide" 
+                                                               value="<?php echo $lp->getIdPessoa(); ?>">
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="submit" name="excluir" class="btn btn-primary">Sim</button>
+                                                            <button type="reset" class="btn btn-secondary" 
+                                                                    data-bs-dismiss="modal">Não</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <?php
+                                    }
+                                }
+                                ?>
+                                </tbody>
+                        </table>
         </div>
     </div>
     <script src="js/bootstrap.js"></script>

@@ -25,13 +25,67 @@ class PessoaController {
         $pessoa->setPerfil($perfil);
         $pessoa->setEmail($email);
         $pessoa->setCpf($cpf);
+        
         $pessoa->setFkEndereco($endereco);
 
      
         $daoPessoa = new daoPessoa();
-        $msg = new Mensagem();
-        $msg->setMsg($perfil);
-        return $msg;
-        //return $daoPessoa->inserir($pessoa);
+        return $daoPessoa->inserir($pessoa);
+    }
+    public function atualizarPessoa(
+        $id,
+        $nome,
+        $dtNasc,
+        $login,
+        $senha,
+        $perfil,
+        $email,
+        $cpf,
+        $cep,
+        $logradouro,
+        $complemento,
+        $bairro,
+        $cidade,
+        $uf
+    ) {
+        $endereco = new Endereco();
+        $endereco->setCep($cep);
+        $endereco->setLogradouro($logradouro);
+        $endereco->setComplemento($complemento);
+        $endereco->setBairro($bairro);
+        $endereco->setCidade($cidade);
+        $endereco->setUf($uf);
+        $pessoa = new Pessoa();
+
+        $pessoa->setIdPessoa($id);
+        $pessoa->setNome($nome);
+        $pessoa->setDtNasc($dtNasc);
+        $pessoa->setLogin($login);
+        $pessoa->setSenha($senha);
+        $pessoa->setPerfil($perfil);
+        $pessoa->setEmail($email);
+        $pessoa->setCpf($cpf);
+
+        $pessoa->setFkEndereco($endereco);
+
+        $daoPessoa = new daoPessoa();
+        return $daoPessoa->atualizarPessoaDAO($pessoa);
+    }
+
+    public function listarPessoas()
+    {
+        $daoPessoa = new daoPessoa();
+        return $daoPessoa->listarPessoasDAO();
+    }
+    public function excluirPessoaDAO($id){
+        $daoPessoa = new DaoPessoa();
+        return $daoPessoa->excluirPessoaDAO($id);
+    }
+
+    public function pesquisarPessoaIdDAO($id){
+        $daoPessoa = new daoPessoa();
+        return $daoPessoa->pesquisarPessoaIdDAO($id);
     }
 }
+
+

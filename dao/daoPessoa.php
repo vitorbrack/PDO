@@ -54,10 +54,10 @@ class daoPessoa {
                             //TEM QUE ESTAR NA MESMA ORDEM DO BANCO DE DADOS
                             $st2->bindParam(1, $cep);
                             $st2->bindParam(2, $logradouro);
-                            $st2->bindParam(3, $complemento);
+                            $st2->bindParam(3, $uf);
                             $st2->bindParam(4, $bairro);
                             $st2->bindParam(5, $cidade);
-                            $st2->bindParam(6, $uf);
+                            $st2->bindParam(6, $complemento);
                             $st2->execute();
     
                             $st3 = $conecta->prepare("select idendereco "
@@ -79,7 +79,7 @@ class daoPessoa {
     
                         //processo para inserir dados de pessoa
                         $stmt = $conecta->prepare("insert into pessoa values "
-                            . "(null,?,?,?,?,?,?,?,?)");
+                            . " (null,?,?,?,?,?,?,?,?)");
     
                         $stmt->bindParam(1, $nome);
                         $stmt->bindParam(2, $dtNasc);
@@ -113,7 +113,7 @@ class daoPessoa {
             if ($conecta) {
                 try {
                     $rs = $conecta->query("SELECT * FROM pessoa inner join endereco "
-                    . "on pessoa.fkEndereco = endereco.idEndereco ");
+                    . "on pessoa.fkEndereco = endereco.idendereco ");
                     $lista = array();
                     $a = 0;
                     if ($rs->execute()) {
@@ -187,7 +187,7 @@ class daoPessoa {
                         if ($st->rowCount() > 0) {
                             //$msg->setMsg("".$st->rowCount());
                             while ($linha = $st->fetch(PDO::FETCH_OBJ)) {
-                                $fkEnd = $linha->idEndereco;
+                                $fkEnd = $linha->idendereco;
                             }
                             //$msg->setMsg("$fkEnd");
                         } else {
@@ -202,7 +202,7 @@ class daoPessoa {
                             $st2->bindParam(6, $uf);      
                            
                             $st2->execute();    
-                            $st3 = $conecta->prepare("select idEndereco "
+                            $st3 = $conecta->prepare("select idendereco "
                                 . "from endereco where cep = ? and "
                                 . "logradouro = ? and complemento = ? limit 1");
                             $st3->bindParam(1, $cep);
@@ -221,7 +221,7 @@ class daoPessoa {
                         $stmt = $conecta->prepare("update pessoa set "
                             . "nome = ?, dtNasc = ?, login = ?, senha = ?, "
                             . "perfil = ?, email = ?, cpf = ?, fkEndereco = ? "
-                            . "where idPessoa = ?");
+                            . "where idpessoa = ?");
     
                         $stmt->bindParam(1, $nome);
                         $stmt->bindParam(2, $dtNasc);
@@ -274,7 +274,7 @@ class daoPessoa {
                                 $pessoa->setCpf($linha->cpf);
     
                                 
-                                $endereco->setIdEndereco($linha->idEndereco);
+                                $endereco->setIdEndereco($linha->idendereco);
                                 $endereco->setCep($linha->cep);
                                 $endereco->setLogradouro($linha->logradouro);
                                 $endereco->setComplemento($linha->complemento);

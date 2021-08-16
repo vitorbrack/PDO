@@ -5,9 +5,9 @@ if (!empty($_POST) AND (empty($_POST['login']) OR empty($_POST['senha']))) {
 	//redireciona para a página inicial.
 	header("Location: ../sessionDestroy.php"); exit;
 }
-require_once "C:/xampp/htdocs/PHPMatutinoPDO2/dao/DaoLogin.php";
-require_once "C:/xampp/htdocs/PHPMatutinoPDO2/model/Mensagem.php";
-require_once "C:/xampp/htdocs/PHPMatutinoPDO2/model/Pessoa.php";
+require_once "C:/xampp/htdocs/PHPMatutinoPDO/dao/DaoLogin.php";
+require_once "C:/xampp/htdocs/PHPMatutinoPDO/model/Mensagem.php";
+require_once "C:/xampp/htdocs/PHPMatutinoPDO/model/Pessoa.php";
 
 if(isset($_POST)){
     $login = $_POST['login'];
@@ -45,7 +45,7 @@ if(gettype($resp) == "object"){
         $_SESSION['nomep'] = null;
         $_SESSION['perfilp'] = null;
     }
-    header("Location: ../index.php");
+    header("Location: ../login.php");
     exit;
 }
 ob_end_flush();

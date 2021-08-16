@@ -1,3 +1,14 @@
+<?php
+if (!isset($_SESSION)) {
+    session_start();
+}
+if(!isset($_SESSION['msg'])){
+    $_SESSION['msg'] = "";
+}
+
+$_SESSION['nr'] = "-1";
+$_SESSION['confereNr'] = "-2";
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -15,12 +26,19 @@
         <div class="container">
             <div class="row espaco">
                 <div class=" col-md-6 offset-md-3"
-                     style="margin-top: 10%;">
-                    <div class="card-header bg-primary border espaco
+                     style="margin-top: 9%;">
+                    <div class="card-header bg-dark border espaco
                          text-white text-center">Validação de Login</div>
                     <div class="card-body border">
-                        <form method="post" action="">
+                        <form method="post" action="./controller/validaLogin.php">
                             <div class="row espaco">
+                                <?php 
+                                if($_SESSION['msg'] != ""){
+                                    echo $_SESSION['msg'];
+                                    $_SESSION['msg'] = "";
+                                }
+                                
+                                ?><br>
                                 <div class="col-md-8 offset-md-2 ">
                                     <label>Usuário</label>
                                 </div>    

@@ -33,7 +33,7 @@ class PessoaController {
         return $daoPessoa->inserir($pessoa);
     }
     public function atualizarPessoa(
-        $id,
+        $idpessoa,
         $nome,
         $dtNasc,
         $login,
@@ -55,9 +55,9 @@ class PessoaController {
         $endereco->setBairro($bairro);
         $endereco->setCidade($cidade);
         $endereco->setUf($uf);
-        $pessoa = new Pessoa();
 
-        $pessoa->setIdPessoa($id);
+        $pessoa = new Pessoa();
+        $pessoa->setIdPessoa($idpessoa);
         $pessoa->setNome($nome);
         $pessoa->setDtNasc($dtNasc);
         $pessoa->setLogin($login);
@@ -85,6 +85,9 @@ class PessoaController {
     public function pesquisarPessoaIdDAO($id){
         $daoPessoa = new daoPessoa();
         return $daoPessoa->pesquisarPessoaIdDAO($id);
+    }
+    public function limpar(){
+        return $fr = new Pessoa();
     }
 }
 

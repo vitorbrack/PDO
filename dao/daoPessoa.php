@@ -36,6 +36,7 @@ class daoPessoa {
                     $st = $conecta->prepare("select idendereco "
                         . "from endereco where cep = ? and "
                         . "logradouro = ? and complemento = ? limit 1");
+
                     $st->bindParam(1, $cep);
                     $st->bindParam(2, $logradouro);
                     $st->bindParam(3, $complemento);
@@ -49,6 +50,7 @@ class daoPessoa {
                         } else {
                             $st2 = $conecta->prepare("insert into "
                                 . "endereco values (null,?,?,?,?,?,?)");
+                                
                             //TEM QUE ESTAR NA MESMA ORDEM DO BANCO DE DADOS
                             $st2->bindParam(1, $cep);
                             $st2->bindParam(2, $logradouro);

@@ -120,8 +120,8 @@ $btExcluir = FALSE;
                         $uf
                     );
                     echo $msg->getMsg();
-                            echo "<META HTTP-EQUIV='REFRESH' CONTENT=\"2;
-                                URL='cadastro.php'\">";
+                            //echo "<META HTTP-EQUIV='REFRESH' CONTENT=\"2;
+                             //   URL='cadastro.php'\">";
                 }
             }
 

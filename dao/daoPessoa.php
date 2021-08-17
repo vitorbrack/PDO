@@ -15,7 +15,7 @@ class daoPessoa {
             $conecta = $conn->conectadb();
             if ($conecta) {
     
-                $nome = $pessoa->getNome();
+                $nome = trim($pessoa->getNome());
                 $dtNasc = $pessoa->getDtNasc();
                 $login = $pessoa->getLogin();
                 $senha = $pessoa->getSenha();
@@ -29,7 +29,10 @@ class daoPessoa {
                 $bairro = $pessoa->getFkEndereco()->getBairro();
                 $cidade = $pessoa->getFkEndereco()->getCidade();
                 $complemento = $pessoa->getFkEndereco()->getComplemento();
-    
+                
+               // $msg->setMsg("Nome: $nome, dtNasc: $dtNasc, login: $login, senha: $senha, perfil: $perfil, email: $email,
+                //cpf: $cpf, cep: $cep");
+                
                 try {
                     //processo para pegar o idendereco da tabela endereco, conforme 
                     //o cep, o logradouro e o complemento informado.
@@ -68,7 +71,7 @@ class daoPessoa {
                             $st3->bindParam(3, $complemento);
                             if ($st3->execute()) {
                                 if ($st3->rowCount() > 0) {
-                                    $msg->setMsg("" . $st3->rowCount());
+                                   // $msg->setMsg("" . $st3->rowCount());
                                     while ($linha = $st3->fetch(PDO::FETCH_OBJ)) {
                                         $fkEnd = $linha->idendereco;
                                     }
@@ -91,12 +94,12 @@ class daoPessoa {
                         $stmt->bindParam(8, $fkEnd);
                         $stmt->execute();
                     }
-    
-                    $msg->setMsg("<p style='color: green;'>"
-                        . "Dados Cadastrados com sucesso</p>");
+                    $msg->setMsg($fkEnd);
+                    //$msg->setMsg("<p style='color: green;'>"
+                   //     . "Dados Cadastrados com sucesso</p>");
                 } catch (Exception $ex) {
                     $msg->setMsg($ex);
-                }
+                }*/
             } else {
                 $msg->setMsg("<p style='color: red;'>"
                     . "Erro na conexão com o banco de dados.</p>");

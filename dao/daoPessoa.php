@@ -16,27 +16,28 @@ class daoPessoa {
             if ($conecta) {
     
                 $nome = trim($pessoa->getNome());
-                $dtNasc = $pessoa->getDtNasc();
-                $login = $pessoa->getLogin();
-                $senha = $pessoa->getSenha();
-                $perfil = $pessoa->getPerfil();
-                $email = $pessoa->getEmail();
-                $cpf = $pessoa->getCpf();
+                $dtNasc = trim($pessoa->getDtNasc());
+                $login = trim($pessoa->getLogin());
+                $senha = trim($pessoa->getSenha());
+                $perfil = trim($pessoa->getPerfil());
+                $email = trim($pessoa->getEmail());
+                $cpf = trim($pessoa->getCpf());
     
-                $cep = $pessoa->getFkEndereco()->getCep();
-                $logradouro = $pessoa->getFkEndereco()->getLogradouro();
-                $uf = $pessoa->getFkEndereco()->getUf();
-                $bairro = $pessoa->getFkEndereco()->getBairro();
-                $cidade = $pessoa->getFkEndereco()->getCidade();
-                $complemento = $pessoa->getFkEndereco()->getComplemento();
+                $cep = trim($pessoa->getFkEndereco()->getCep());
+                $logradouro = trim($pessoa->getFkEndereco()->getLogradouro());
+                $uf = trim($pessoa->getFkEndereco()->getUf());
+                $bairro = trim($pessoa->getFkEndereco()->getBairro());
+                $cidade = trim($pessoa->getFkEndereco()->getCidade());
+                $complemento = trim($pessoa->getFkEndereco()->getComplemento());
                 
                // $msg->setMsg("Nome: $nome, dtNasc: $dtNasc, login: $login, senha: $senha, perfil: $perfil, email: $email,
-                //cpf: $cpf, cep: $cep");
+               // cpf: $cpf, cep: $cep, logradouro: $logradouro, uf: $uf, bairro: $bairro, cidade: $cidade, complemento: $complemento");
                 
-                try {
+                 try {
                     //processo para pegar o idendereco da tabela endereco, conforme 
                     //o cep, o logradouro e o complemento informado.
-                    $st = $conecta->prepare("select idendereco "
+                    $conecta->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                   $st = $conecta->prepare("select idendereco "
                         . "from endereco where cep = ? and "
                         . "logradouro = ? and complemento = ? limit 1");
 
@@ -57,10 +58,10 @@ class daoPessoa {
                             //TEM QUE ESTAR NA MESMA ORDEM DO BANCO DE DADOS
                             $st2->bindParam(1, $cep);
                             $st2->bindParam(2, $logradouro);
-                            $st2->bindParam(3, $uf);
+                            $st2->bindParam(3, $complemento);
                             $st2->bindParam(4, $bairro);
                             $st2->bindParam(5, $cidade);
-                            $st2->bindParam(6, $complemento);
+                            $st2->bindParam(6, $uf);
                             $st2->execute();
     
                             $st3 = $conecta->prepare("select idendereco "
@@ -95,11 +96,11 @@ class daoPessoa {
                         $stmt->execute();
                     }
                     $msg->setMsg($fkEnd);
-                    //$msg->setMsg("<p style='color: green;'>"
-                   //     . "Dados Cadastrados com sucesso</p>");
-                } catch (Exception $ex) {
-                    $msg->setMsg($ex);
-                }*/
+                    $msg->setMsg("<p style='color: green;'>"
+                       . "Dados Cadastrados com sucesso</p>");
+                } catch (PDOException $ex) {
+                    $msg->setMsg(var_dump($ex->errorInfo));
+                }
             } else {
                 $msg->setMsg("<p style='color: red;'>"
                     . "Erro na conexão com o banco de dados.</p>");

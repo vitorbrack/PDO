@@ -4,10 +4,24 @@ require_once 'C:/xampp/htdocs/PHPMatutinoPDO/model/Pessoa.php';
 require_once 'c:/xampp/htdocs/PHPMatutinoPDO/model/Endereco.php';
 require_once 'c:/xampp/htdocs/PHPMatutinoPDO/model/Mensagem.php';
 
-class PessoaController {
+class PessoaController
+{
 
-    public function inserirPessoa($nome, $dtNasc, $login, $senha, 
-            $perfil, $email, $cpf, $cep, $logradouro , $uf , $bairro, $cidade, $complemento){
+    public function inserirPessoa(
+        $nome,
+        $dtNasc,
+        $login,
+        $senha,
+        $perfil,
+        $email,
+        $cpf,
+        $cep,
+        $logradouro,
+        $uf,
+        $bairro,
+        $cidade,
+        $complemento
+    ) {
 
         $endereco = new Endereco();
         $endereco->setCep($cep);
@@ -16,7 +30,7 @@ class PessoaController {
         $endereco->setBairro($bairro);
         $endereco->setCidade($cidade);
         $endereco->setComplemento($complemento);
-                
+
         $pessoa = new Pessoa();
         $pessoa->setNome($nome);
         $pessoa->setDtNasc($dtNasc);
@@ -25,10 +39,10 @@ class PessoaController {
         $pessoa->setPerfil($perfil);
         $pessoa->setEmail($email);
         $pessoa->setCpf($cpf);
-        
+
         $pessoa->setFkEndereco($endereco);
 
-     
+
         $daoPessoa = new daoPessoa();
         return $daoPessoa->inserir($pessoa);
     }
@@ -43,10 +57,10 @@ class PessoaController {
         $cpf,
         $cep,
         $logradouro,
-        $complemento,
+        $uf,
         $bairro,
         $cidade,
-        $uf
+        $complemento
     ) {
         $endereco = new Endereco();
         $endereco->setCep($cep);
@@ -77,18 +91,19 @@ class PessoaController {
         $daoPessoa = new daoPessoa();
         return $daoPessoa->listarPessoasDAO();
     }
-    public function excluirPessoaDAO($id){
+    public function excluirPessoaDAO($id)
+    {
         $daoPessoa = new DaoPessoa();
         return $daoPessoa->excluirPessoaDAO($id);
     }
 
-    public function pesquisarPessoaIdDAO($id){
+    public function pesquisarPessoaIdDAO($id)
+    {
         $daoPessoa = new daoPessoa();
         return $daoPessoa->pesquisarPessoaIdDAO($id);
     }
-    public function limpar(){
+    public function limpar()
+    {
         return $fr = new Pessoa();
     }
 }
-
-
